@@ -13,6 +13,8 @@ function iniciarApp(){
     botonesPaginador();//agrega o quita los botones del paginador
     paginaSiguiente();
     paginaAnterior();
+
+    consultarAPI();// Consulta la api en el backend de php
 }
 
 function mostrarSeccion(){
@@ -91,4 +93,26 @@ function paginaSiguiente() {
         paso++;
         botonesPaginador();
     })
+}
+
+async function consultarAPI(){
+
+    try {
+        const url = 'http://localhost:8000/api/servicios';
+        const resultado = await fetch(url); //fetch para consumir api
+        const servicios = await resultado.json();
+
+        //console.log(servicios);
+
+        mostrarServicios(servicios);
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+function mostrarServicios(servicios){
+    servicios.forEach( servicio =>{
+        const { id, nombre, precio} = servicio;
+    } )
 }
