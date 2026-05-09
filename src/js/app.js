@@ -21,6 +21,7 @@ function iniciarApp() {
   paginaAnterior();
 
   consultarAPI(); // Consulta la api en el backend de php
+  nombreCliente(); //Añade el nombre del cliente para el objeto cita
 }
 
 function mostrarSeccion() {
@@ -154,4 +155,8 @@ function seleccionarServicio(servicio) {
   }
 
   console.log(cita);
+}
+
+function nombreCliente() {
+  cita.nombre = document.querySelector("#nombre").value;
 }
