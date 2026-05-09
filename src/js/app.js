@@ -2,134 +2,140 @@ let paso = 1;
 
 const pasoInicial = 1;
 const pasoFinal = 3;
+const cita = {
+  nombre: "",
+  fecha: "",
+  hora: "",
+  servicios: [],
+};
 
-document.addEventListener('DOMContentLoaded', function() {
-    iniciarApp();
-})
+document.addEventListener("DOMContentLoaded", function () {
+  iniciarApp();
+});
 
-function iniciarApp(){
-    mostrarSeccion();//muestra y oculta las secciones
-    tabs(); //cambia la seccion cuando se presionen los tabs
-    botonesPaginador();//agrega o quita los botones del paginador
-    paginaSiguiente();
-    paginaAnterior();
+function iniciarApp() {
+  mostrarSeccion(); //muestra y oculta las secciones
+  tabs(); //cambia la seccion cuando se presionen los tabs
+  botonesPaginador(); //agrega o quita los botones del paginador
+  paginaSiguiente();
+  paginaAnterior();
 
-    consultarAPI();// Consulta la api en el backend de php
+  consultarAPI(); // Consulta la api en el backend de php
 }
 
-function mostrarSeccion(){
-    //ocultar la seccion con la clase mostrar
+function mostrarSeccion() {
+  //ocultar la seccion con la clase mostrar
 
-    const seccionAnterior = document.querySelector('.mostrar');
-    if(seccionAnterior){
-        seccionAnterior.classList.remove('mostrar');
-    }
-    
-    
-    //seleccinar la seccion con el paso
-    const seccion = document.querySelector(`#paso-${paso}`);
+  const seccionAnterior = document.querySelector(".mostrar");
+  if (seccionAnterior) {
+    seccionAnterior.classList.remove("mostrar");
+  }
 
-    seccion.classList.add('mostrar');
+  //seleccinar la seccion con el paso
+  const seccion = document.querySelector(`#paso-${paso}`);
 
-    //quitar clase actual al tab anterior
-    const tabAnterior = document.querySelector('.actual');
-    if(tabAnterior){
-        tabAnterior.classList.remove('actual'); 
-    }
+  seccion.classList.add("mostrar");
 
-    //resalta el tab actual
-    const tab = document.querySelector(`[data-paso="${paso}"]`);
-    tab.classList.add('actual');
+  //quitar clase actual al tab anterior
+  const tabAnterior = document.querySelector(".actual");
+  if (tabAnterior) {
+    tabAnterior.classList.remove("actual");
+  }
+
+  //resalta el tab actual
+  const tab = document.querySelector(`[data-paso="${paso}"]`);
+  tab.classList.add("actual");
 }
 
+function tabs() {
+  const botones = document.querySelectorAll(".tabs button");
 
-function tabs(){
-    const botones = document.querySelectorAll('.tabs button');
-    
-    botones.forEach ( boton => {
-        boton.addEventListener('click', function(e){
-            paso = parseInt(e.target.dataset.paso);
-            mostrarSeccion();
-            botonesPaginador();
-        });
-    })
-
-
-} 
+  botones.forEach((boton) => {
+    boton.addEventListener("click", function (e) {
+      paso = parseInt(e.target.dataset.paso);
+      mostrarSeccion();
+      botonesPaginador();
+    });
+  });
+}
 
 function botonesPaginador() {
-    const paginaAnterior = document.querySelector('#anterior');
-    const paginaSiguiente = document.querySelector('#siguiente');
+  const paginaAnterior = document.querySelector("#anterior");
+  const paginaSiguiente = document.querySelector("#siguiente");
 
-    if(paso == 1){
-        paginaAnterior.classList.add('ocultar');
-        paginaSiguiente.classList.remove('ocultar');
-    } else if (paso == 3){
-        paginaAnterior.classList.remove('ocultar');
-        paginaSiguiente.classList.add('ocultar');
-    } else {
-        paginaAnterior.classList.remove('ocultar');
-        paginaSiguiente.classList.remove('ocultar');
-    }
-    mostrarSeccion();
-
+  if (paso == 1) {
+    paginaAnterior.classList.add("ocultar");
+    paginaSiguiente.classList.remove("ocultar");
+  } else if (paso == 3) {
+    paginaAnterior.classList.remove("ocultar");
+    paginaSiguiente.classList.add("ocultar");
+  } else {
+    paginaAnterior.classList.remove("ocultar");
+    paginaSiguiente.classList.remove("ocultar");
+  }
+  mostrarSeccion();
 }
 
 function paginaAnterior() {
-    const paginaAnterior = document.querySelector('#anterior');
-    paginaAnterior.addEventListener('click', function(){
-
-        if(paso <= pasoInicial) return;
-        paso--;
-        botonesPaginador();
-    })
+  const paginaAnterior = document.querySelector("#anterior");
+  paginaAnterior.addEventListener("click", function () {
+    if (paso <= pasoInicial) return;
+    paso--;
+    botonesPaginador();
+  });
 }
 
 function paginaSiguiente() {
-    const paginaSiguiente = document.querySelector('#siguiente');
-    paginaSiguiente.addEventListener('click', function(){
-
-        if(paso >= pasoFinal) return;
-        paso++;
-        botonesPaginador();
-    })
+  const paginaSiguiente = document.querySelector("#siguiente");
+  paginaSiguiente.addEventListener("click", function () {
+    if (paso >= pasoFinal) return;
+    paso++;
+    botonesPaginador();
+  });
 }
 
-async function consultarAPI(){
+async function consultarAPI() {
+  try {
+    const url = "http://localhost:8000/api/servicios";
+    const resultado = await fetch(url); //fetch para consumir api
+    const servicios = await resultado.json();
 
-    try {
-        const url = 'http://localhost:8000/api/servicios';
-        const resultado = await fetch(url); //fetch para consumir api
-        const servicios = await resultado.json();
+    //console.log(servicios);
 
-        //console.log(servicios);
-
-        mostrarServicios(servicios);
-
-    } catch (error) {
-        console.log(error);
-    }
+    mostrarServicios(servicios);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-function mostrarServicios(servicios){
-    servicios.forEach( servicio =>{
-        const { id, nombre, precio} = servicio;
+function mostrarServicios(servicios) {
+  servicios.forEach((servicio) => {
+    const { id, nombre, precio } = servicio;
 
-        const nombreServicio = document.createElement('P');
-        nombreServicio.classList.add('nombre-servicio');
-        nombreServicio.textContent = nombre;
+    const nombreServicio = document.createElement("P");
+    nombreServicio.classList.add("nombre-servicio");
+    nombreServicio.textContent = nombre;
 
-        const precioServicio = document.createElement('P');
-        precioServicio.classList.add('precio-servicio');
-        precioServicio.textContent = `$${precio}`;
+    const precioServicio = document.createElement("P");
+    precioServicio.classList.add("precio-servicio");
+    precioServicio.textContent = `$${precio}`;
 
-        const servicioDiv = document.createElement('DIV');
-        servicioDiv.classList.add('servicio');
-        servicioDiv.dataset.idServicio = id;
+    const servicioDiv = document.createElement("DIV");
+    servicioDiv.classList.add("servicio");
+    servicioDiv.dataset.idServicio = id;
+    servicioDiv.onclick = function () {
+      seleccionarServicio(servicio);
+    };
 
-        servicioDiv.appendChild(nombreServicio);
+    servicioDiv.appendChild(nombreServicio);
+    servicioDiv.appendChild(precioServicio);
 
-        console.log(servicioDiv)
+    document.querySelector("#servicios").appendChild(servicioDiv);
+  });
+}
 
-    } )
+function seleccionarServicio(servicio) {
+  const { servicios } = cita;
+  cita.servicios = [...servicios, servicio]; //...servicios dice que toma una copia de servicios y luego le agrega el nuevo servicio
+  console.log(cita);
 }
