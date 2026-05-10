@@ -27,12 +27,12 @@
 
             <div class="campo">
                 <label for="fecha">Fecha</label>
-                <input type="date" id="fecha">
+                <input type="date" id="fecha" min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>"/>
             </div>
 
             <div class="campo">
                 <label for="hora">Hora</label>
-                <input type="time" id="hora">
+                <input type="time" id="hora"/>
             </div>
         </form>
     </div>
@@ -55,8 +55,6 @@
     </div>
 </div>
 
-<?php 
-    $script = "
-        <script src='build/js/app.js'></script>
-    ";
-?>
+<?php
+  $script = "<script src='build/js/app.js'></script>";
+                ?>

@@ -22,6 +22,7 @@ function iniciarApp() {
 
   consultarAPI(); // Consulta la api en el backend de php
   nombreCliente(); //Añade el nombre del cliente para el objeto cita
+  seleccionarFecha(); //Añade la fecha de la cita en el objeto
 }
 
 function mostrarSeccion() {
@@ -159,4 +160,38 @@ function seleccionarServicio(servicio) {
 
 function nombreCliente() {
   cita.nombre = document.querySelector("#nombre").value;
+}
+function seleccionarFecha() {
+  const inputFecha = document.querySelector("#fecha");
+  inputFecha.addEventListener("input", function (e) {
+    const dia = new Date(e.target.value).getUTCDay();
+
+    if ([6, 0].includes(dia)) {
+      //con .includes nos permite verificar si los datos que coloco primero se encuentran en el parametro que asigno
+      e.target.value = "";
+      mostrarAlerta("Fines de Semana no Permitidos", "error");
+    } else {
+      console.log("correcto");
+    }
+  });
+}
+
+function mostrarAlerta(mensaje, tipo) {
+  // Previene que se genere mas de 1 alerta
+  const alertaPrevia = document.createElement(".alerta");
+  if (alertaPrevia) return;
+
+  //Script para crear la alerta
+  const alerta = document.createElement("DIV");
+  alerta.textContent = mensaje;
+  alerta.classList.add("alerta");
+  alerta.classList.add(tipo);
+
+  const formulario = document.querySelector(".formulario");
+  formulario.appendChild(alerta);
+
+  //Elimina la alerta luego de 3s
+  setTimeout(() => {
+    alerta.remove();
+  }, 3000);
 }
