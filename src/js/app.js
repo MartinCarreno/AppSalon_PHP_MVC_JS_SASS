@@ -23,6 +23,7 @@ function iniciarApp() {
   consultarAPI(); // Consulta la api en el backend de php
   nombreCliente(); //Añade el nombre del cliente para el objeto cita
   seleccionarFecha(); //Añade la fecha de la cita en el objeto
+  seleccionarHora(); //Añade la hora de la cita al objeto
 }
 
 function mostrarSeccion() {
@@ -176,9 +177,23 @@ function seleccionarFecha() {
   });
 }
 
+function seleccionarHora() {
+  const inputHora = document.querySelector("#hora");
+  inputHora.addEventListener("input", function (e) {
+    const horaCita = e.target.value;
+    const hora = horaCita.split(":")[0];
+    if (hora < 10 || hora > 18) {
+      e.target.value = "";
+      mostrarAlerta("Hora no Valida", "error");
+    } else {
+      cita.hora = e.target.value;
+    }
+  });
+}
+
 function mostrarAlerta(mensaje, tipo) {
   // Previene que se genere mas de 1 alerta
-  const alertaPrevia = document.createElement(".alerta");
+  const alertaPrevia = document.querySelector(".alerta");
   if (alertaPrevia) return;
 
   //Script para crear la alerta
