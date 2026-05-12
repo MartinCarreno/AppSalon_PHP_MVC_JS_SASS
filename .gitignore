@@ -1,2 +1,8 @@
 vendor/
 node_modules/
+
+.php-cs-fixer.cache
+
+.DS_Store
+**/.DS_Store
+postman/environments/
