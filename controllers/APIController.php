@@ -17,12 +17,13 @@ class APIController
     {
         $cita = new Cita($_POST);
 
+        $resultado = $cita->guardar();
 
-        $respuesta = [
+        /* $respuesta = [
           //Arreglo asociativo es igual a un objeto en javascript, por ende se puede utilizar en javascript
-          'cita' => $_POST
-        ];
+          'cita' => $cita
+        ]; */
 
-        echo json_encode($respuesta);
+        echo json_encode($resultado);
     }
 }

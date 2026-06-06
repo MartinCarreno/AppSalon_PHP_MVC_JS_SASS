@@ -3,6 +3,7 @@ let paso = 1;
 const pasoInicial = 1;
 const pasoFinal = 3;
 const cita = {
+    id: "",
     nombre: "",
     fecha: "",
     hora: "",
@@ -22,6 +23,7 @@ function iniciarApp() {
 
     consultarAPI(); // Consulta la api en el backend de php
 
+    idCliente(); //Añade el id al objeto
     nombreCliente(); //Añade el nombre del cliente para el objeto cita
     seleccionarFecha(); //Añade la fecha de la cita en el objeto
     seleccionarHora(); //Añade la hora de la cita al objeto
@@ -163,6 +165,10 @@ function seleccionarServicio(servicio) {
     }
 
     console.log(cita);
+}
+
+function idCliente() {
+    cita.id = document.querySelector("#id").value;
 }
 
 function nombreCliente() {
@@ -311,28 +317,53 @@ function mostrarResumen() {
 }
 
 async function reservarCita() {
-    const {nombre, fecha, hora, servicios} = cita;
+    const { nombre, fecha, hora, servicios, id } = cita;
 
-    const idServicios = servicios.map(servicio => servicio.id);
+    const idServicios = servicios.map(servicio => servicio.id); //con el map, las coincidencias las ira poniendo en la variable idServicios
 
     const datos = new FormData();
-    datos.append("nombre", nombre);
-    datos.append("fecha", fecha);
-    datos.append("hora", hora);
+
+    datos.append('fecha', fecha);
+    datos.append('hora', hora);
+    datos.append('usuarioId', id);
     datos.append('servicios', idServicios);
-
-    //peticion hacia la api
-    const url = 'http://localhost:8000/api/citas'
-
-    const respuesta = await fetch(url , {
-        method: 'POST',
-        body: datos
-    });
-
-
-    const resultado = await respuesta.json();
-    console.log(resultado);
 
     //Forma para verificar datos de FormDAta = [...($)] $=variable
     //consoleensole.log([...datos]);
+
+    try {
+        //peticion hacia la api
+        const url = 'http://localhost:8000/api/citas'
+
+        const respuesta = await fetch(url, {
+            method: 'POST',
+            body: datos
+        });
+
+
+        const resultado = await respuesta.json();
+        console.log(resultado.resultado);
+        if (resultado.resultado) {
+            Swal.fire({
+                icon: "success",
+                title: "Cita Creada",
+                text: "Tu cita fue creada correctamente",
+                button: "Ok"
+            }).then(() => {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 3000);
+
+            });
+        }
+    } catch (error) {
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Hubo un error al guardar la cita",
+        });
+    }
+
+
+
 }
