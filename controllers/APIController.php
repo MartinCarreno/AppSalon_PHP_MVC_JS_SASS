@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Model\Cita;
 use Model\Servicio;
 
 class APIController
@@ -12,13 +13,16 @@ class APIController
         echo json_encode($servicios);
     }
 
-    public function guardar()
+    public static function guardar()
     {
+        $cita = new Cita($_POST);
+
+
         $respuesta = [
-            'mensaje' => 'Todo Ok',
+          //Arreglo asociativo es igual a un objeto en javascript, por ende se puede utilizar en javascript
+          'cita' => $_POST
         ];
 
         echo json_encode($respuesta);
     }
 }
-
