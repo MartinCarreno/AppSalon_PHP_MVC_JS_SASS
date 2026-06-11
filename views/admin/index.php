@@ -13,10 +13,18 @@ include_once __DIR__ . '/../templates/barra.php';
             <input
                 type="date"
                 id="fecha"
-                name="fecha" />
+                name="fecha"
+                value="<?php echo $fecha?>"
+            />
         </div>
     </form>
 </div>
+
+<?php 
+    if(count($citas) === 0){
+        echo "<h2>No Hay Citas para este día</h2>";
+    }
+?>
 
 <div id="citas-admin">
     <ul class="citas">
@@ -49,6 +57,13 @@ include_once __DIR__ . '/../templates/barra.php';
 
                 if(esUltimo($actual, $proximo)){?>
                     <p class="total">Total: <span>$ <?php echo $total;?></span></p>
+
+                    <form action="/api/eliminar" method="POST">
+                        <input type="hidden" name="id" value="<?php echo $cita->id;?>">
+
+                        <input type="submit" class="boton-eliminar" value="Eliminar">
+                    </form>
+
             <?php } ?>    
             
 
@@ -59,3 +74,7 @@ include_once __DIR__ . '/../templates/barra.php';
     </ul>
 
 </div>
+
+<?php 
+    $script = "<script src='build/js/buscador.js'></script>"
+?>
