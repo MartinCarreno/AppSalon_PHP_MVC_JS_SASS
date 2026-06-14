@@ -1,6 +1,6 @@
 vendor/
 node_modules/
-.env
+includes/.env
 .php-cs-fixer.cache
 
 .DS_Store
