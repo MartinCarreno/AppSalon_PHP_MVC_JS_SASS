@@ -25,12 +25,12 @@ class Email
             //crear objeto de email
             $mail = new PHPMailer();
             $mail->isSMTP();
-            $mail->Host = 'sandbox.smtp.mailtrap.io';
+            $mail->Host = $_ENV['EMAIL_HOST'];
             $mail->SMTPAuth = true;
-            $mail->Username = '***ELIMINADO***';
-            $mail->Password = '***ELIMINADO***';
+            $mail->Port = $_ENV['EMAIL_PORT'];
+            $mail->Username = $_ENV['EMAIL_USER'];
+            $mail->Password = $_ENV['EMAIL_PASSWORD'];
             $mail->SMTPSecure = 'tls';
-            $mail->Port = 2525;
 
             $mail->setFrom('cuentas@appsalon.com');
             $mail->addAddress('cuentas@appsalon.com', 'AppSalon.com');
@@ -42,7 +42,7 @@ class Email
 
             $contenido = "<html>";
             $contenido .= "<p><strong>Hola " . $this->nombre . "</strong> Has creado tu cuenta en AppSalon, solo debes confirmala presionando el siguiente enlace:</p>";
-            $contenido .= "<a href='http://localhost:8000/confirmar-cuenta?token=" . $this->token . "'>Confirmar Cuenta</a>";
+            $contenido .= "<a href='" . $_ENV['APP_URL'] . "/confirmar-cuenta?token=" . $this->token . "'>Confirmar Cuenta</a>";
             $contenido .= "<p>Si tu no solicitaste esta cuenta puedes ignorar el mensaje</p>";
             $contenido .= "</html>";
 
@@ -62,12 +62,12 @@ class Email
             //crear objeto de email
             $mail = new PHPMailer();
             $mail->isSMTP();
-            $mail->Host = 'sandbox.smtp.mailtrap.io';
+            $mail->Host = $_ENV['EMAIL_HOST'];
             $mail->SMTPAuth = true;
-            $mail->Username = '***ELIMINADO***';
-            $mail->Password = '***ELIMINADO***';
+            $mail->Port = $_ENV['EMAIL_PORT'];
+            $mail->Username = $_ENV['EMAIL_USER'];
+            $mail->Password = $_ENV['EMAIL_PASSWORD'];
             $mail->SMTPSecure = 'tls';
-            $mail->Port = 2525;
 
             $mail->setFrom('cuentas@appsalon.com');
             $mail->addAddress('cuentas@appsalon.com', 'AppSalon.com');
@@ -79,7 +79,7 @@ class Email
 
             $contenido = "<html>";
             $contenido .= "<p><strong>Hola " . $this->nombre . "</strong> Has Solicitado Reestablecer tu password, sigue el siguiente enlace para hacerlo:</p>";
-            $contenido .= "<a href='http://localhost:8000/recuperar?token=" . $this->token . "'>Reestablecer Password</a>";
+            $contenido .= "<a href='" . $_ENV['APP_URL'] . "/recuperar?token=" . $this->token . "'>Reestablecer Password</a>";
             $contenido .= "<p>Si tu no solicitaste este cambio puedes ignorar el mensaje</p>";
             $contenido .= "</html>";
 

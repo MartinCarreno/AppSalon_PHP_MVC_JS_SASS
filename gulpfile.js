@@ -1,7 +1,7 @@
 import path from 'path'
 import fs from 'fs'
 import { glob } from 'glob'
-import { src, dest, watch, series } from 'gulp'
+import { src, dest, watch, series, parallel } from 'gulp'
 import * as dartSass from 'sass'
 import gulpSass from 'gulp-sass'
 import terser from 'gulp-terser'
@@ -70,7 +70,8 @@ function procesarImagenes(file, outputSubDir) {
 export function dev() {
     watch( paths.scss, css );
     watch( paths.js, js );
-    watch('src/img/**/*.{png,jpg}', imagenes)
+    watch('src/img/**/*.{png,jpg}', imagenes);
 }
 
-export default series( js, css, imagenes, dev )
+export default series( js, css, imagenes, dev );
+export const build = parallel(css, js, imagenes);
